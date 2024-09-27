@@ -108,12 +108,16 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+# 言語コードの設定を日本語に変更
+LANGUAGE_CODE = 'ja'
 
-TIME_ZONE = 'UTC'
+# タイムゾーンの設定を日本標準時（JST）に変更
+TIME_ZONE = 'Asia/Tokyo'
 
+# 国際化の設定
 USE_I18N = True
 
+# タイムゾーンのサポートを有効にする
 USE_TZ = True
 
 
