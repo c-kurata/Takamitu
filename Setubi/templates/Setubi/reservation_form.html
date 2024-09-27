@@ -135,15 +135,17 @@
                 </div>
             {% endif %}
 
-            <form method="post">
+            <form method="post" enctype="multipart/form-data"> <!-- enctype を追加 -->
                 {% csrf_token %}
                 {% for field in form %}
                     <div class="form-group">
                         {{ field.label_tag }}
-                        {{ field }}
-                        {% if field.errors %}
-                            <div class="error">{{ field.errors }}</div>
-                        {% endif %}
+                        <div>
+                            {{ field }}
+                            {% if field.errors %}
+                                <div class="error">{{ field.errors }}</div>
+                            {% endif %}
+                        </div>
                     </div>
                 {% endfor %}
                 <div>
@@ -164,15 +166,21 @@
 
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script>
+        // 開始日時と終了日時の初期設定を調整
+        const now = new Date();
         flatpickr("input[name='start_time']", {
             enableTime: true,
             dateFormat: "Y-m-d H:i",
-            time_24hr: true
+            time_24hr: true,
+            minDate: now, // 現在の日時以降に制限
+            defaultDate: now // 現在日時をデフォルトに設定
         });
         flatpickr("input[name='end_time']", {
             enableTime: true,
             dateFormat: "Y-m-d H:i",
-            time_24hr: true
+            time_24hr: true,
+            minDate: now, // 現在の日時以降に制限
+            defaultDate: now // 現在日時をデフォルトに設定
         });
     </script>
 </body>

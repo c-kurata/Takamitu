@@ -1,7 +1,7 @@
 from django.views.generic import ListView, CreateView, UpdateView, DetailView, DeleteView, TemplateView
 from django.http import JsonResponse
 from django.urls import reverse_lazy
-from .models import Reservation
+from .models import Reservation, Equipment
 from .forms import ReservationForm
 
 # 予約一覧表示ビュー
@@ -24,7 +24,7 @@ class ReservationUpdateView(UpdateView):
     template_name = 'Setubi/reservation_form.html'
     success_url = reverse_lazy('reservation_list')
 
-# 予約削除ビューを追加
+# 予約削除ビュー
 class ReservationDeleteView(DeleteView):
     model = Reservation
     template_name = 'Setubi/reservation_confirm_delete.html'  # 削除確認用のテンプレート
@@ -45,24 +45,15 @@ def reservation_events(request):
     reservations = Reservation.objects.all()
     events = []
 
-    # 設備ごとの色設定
-    equipment_colors = {
-        '4tユニック': '#ff9999',  # 赤色
-        'ドローン（UAV）': '#99ff99',  # 緑色
-        '軽トラ': '#9999ff',  # 青色
-        '2tダンプ': '#5555ff',
-        # 他の設備にも色を追加してください
-    }
-
     for reservation in reservations:
-        # 設備の名前に基づいて色を設定
-        color = equipment_colors.get(reservation.equipment.name, '#cccccc')  # デフォルト色を設定
+        # 設備ごとの色を取得
+        color = reservation.equipment.color
 
         events.append({
             'title': f"{reservation.equipment.name} - {reservation.facility} - {reservation.user.name}",  # イベントタイトル
             'start': reservation.start_time.strftime('%Y-%m-%dT%H:%M:%S'),  # 開始日時
             'end': reservation.end_time.strftime('%Y-%m-%dT%H:%M:%S'),      # 終了日時
-            'allDay': True,  # これにより時間を表示せず、終日イベントとして扱う
+            'allDay': False,  # 終日イベントではないのでFalse
             'color': color,  # 設備ごとの色を追加
         })
     return JsonResponse(events, safe=False)
