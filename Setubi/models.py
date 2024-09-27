@@ -9,9 +9,9 @@ def generate_random_color():
 
 # 設備モデル
 class Equipment(models.Model):
-    name = models.CharField(max_length=100)  # 設備名
-    description = models.TextField(blank=True, null=True)  # 設備の説明（任意）
-    serial_number = models.CharField(max_length=100, blank=True, null=True)  # 設備のシリアル番号（任意）
+    name = models.CharField(max_length=100, verbose_name='設備名')  # 設備名
+    description = models.TextField(blank=True, null=True, verbose_name='説明')  # 設備の説明（任意）
+    serial_number = models.CharField(max_length=100, blank=True, null=True, verbose_name='シリアル番号')  # 設備のシリアル番号（任意）
     color = models.CharField(max_length=7, default=generate_random_color, verbose_name='色')  # 設備ごとの色を自動で割り当てる
 
     def __str__(self):
@@ -35,6 +35,7 @@ class Reservation(models.Model):
     def __str__(self):
         return f"{self.equipment.name} - {self.facility} - {self.start_time} - {self.user}"
 
+    # 予約が過去のものであるかどうかをチェックするメソッド
     def is_past_due(self):
         return self.end_time < timezone.now()
 
@@ -49,8 +50,12 @@ class Reservation(models.Model):
         ).exclude(id=self.id)  # 自分自身は除外
 
         if overlapping_reservations.exists():
-            raise ValidationError(f"{self.equipment} はこの時間帯に既に予約されています。別の時間帯を選んでください。")
+            raise ValidationError(f"{self.equipment.name} はこの時間帯に既に予約されています。別の時間帯を選んでください。")
         
+        # 開始時間が終了時間より後でないかチェック
+        if self.start_time >= self.end_time:
+            raise ValidationError("開始時間は終了時間より前である必要があります。")
+
     # 保存時にバリデーションを実行
     def save(self, *args, **kwargs):
         self.clean()  # バリデーションを実行

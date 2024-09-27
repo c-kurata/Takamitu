@@ -1,4 +1,5 @@
 from django.db import models
+from datetime import date, timedelta
 
 class Department(models.Model):
     id = models.AutoField(primary_key=True)  # 自動インクリメントのID
@@ -45,3 +46,20 @@ class MemberList(models.Model):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
+
+    def calculate_retirement_date(self):
+        """
+        定年退職日を計算するメソッド。仮に定年を65歳とし、65歳になる月の末日を計算します。
+        """
+        retirement_age = 65  # 定年年齢
+        if self.date_of_birth:
+            # 生年月日から定年になる年を計算
+            retirement_year = self.date_of_birth.year + retirement_age
+            retirement_month = self.date_of_birth.month
+
+            # 定年退職予定の年と月から、その月の末日を取得
+            next_month = retirement_month % 12 + 1
+            retirement_year = retirement_year if retirement_month < 12 else retirement_year + 1
+            last_day_of_retirement_month = date(retirement_year, next_month, 1) - timedelta(days=1)
+            return last_day_of_retirement_month
+        return None

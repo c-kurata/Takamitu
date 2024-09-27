@@ -9,4 +9,5 @@ urlpatterns = [
     path('meibo/', include('Meibo.urls')),  # MeiboアプリのURLをインクルード
     path('setubi/', include('Setubi.urls')),  # SetubiアプリのURLをインクルード
     path('mitumori/', include('Mitumori.urls')),  # MitumoriアプリのURLをインクルード
+    path('reservation/', include('Setubi.urls')),  # SetubiアプリのURLを予約用にリダイレクト
 ]

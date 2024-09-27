@@ -1,14 +1,7 @@
 from django import forms
-from .models import MemberList, City  # Cityモデルをインポート
+from .models import MemberList, City
 
 class MemberForm(forms.ModelForm):
-    city = forms.ModelChoiceField(
-        queryset=City.objects.all(),  # Cityモデルの全レコードを選択肢として設定
-        label='住所（市町村）',
-        widget=forms.Select(attrs={'style': 'width: 200px;'}),
-        required=True
-    )
-
     class Meta:
         model = MemberList
         fields = [
@@ -64,3 +57,22 @@ class MemberForm(forms.ModelForm):
             'remark': forms.Textarea(attrs={'placeholder': '備考', 'rows': 3, 'style': 'width: 200px;'}),  # 備考も調整
             'profile_photo': forms.ClearableFileInput(attrs={'style': 'width: 200px;'}),
         }
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # 市町村を選択肢として表示
+        self.fields['city'].queryset = City.objects.all()
+        self.fields['city'].widget.attrs.update({'style': 'width: 200px;'})
+
+    def clean(self):
+        cleaned_data = super().clean()
+        date_of_birth = cleaned_data.get('date_of_birth')
+        
+        # 生年月日から定年月を自動計算
+        if date_of_birth:
+            retirement_age = 65
+            retirement_year = date_of_birth.year + retirement_age
+            retirement_month = date_of_birth.month
+            cleaned_data['retire_age_month'] = f"{retirement_year}/{retirement_month:02d}"
+        
+        return cleaned_data
