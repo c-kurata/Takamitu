@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>社員名簿一覧</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            margin: 0;
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            font-size: 12px;
+        }
+        th, td {
+            padding: 6px;
+            border-bottom: 1px solid #ddd;
+            border-right: 1px solid #ddd;
+            text-align: center; /* セルとヘッダーを中央揃え */
+        }
+        th {
+            background-color: #6495ed;
+            color: white;
+            border-right: 1px solid white;
+        }
+        /* ユーザーID列の幅を調整 */
+        .user-id-column {
+            width: 80px; /* 任意の幅に調整できます */
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        .button-container {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+        .link-button {
+            display: inline-block;
+            margin: 10px 10px 10px 0;
+            padding: 8px 12px;
+            background-color: #6495ed;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        .link-button:hover {
+            background-color: #4169e1;
+        }
+        .logout-button {
+            background-color: #dc3545;
+            color: white;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        .logout-button:hover {
+            background-color: #c82333;
+        }
+        .edit-button {
+            background-color: #ffb6c1;
+            color: white;
+            padding: 6px 10px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .edit-button:hover {
+            background-color: #ff69b4;
+        }
+        .search-form {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+        .search-input {
+            padding: 6px;
+            width: 250px;
+            margin-right: 10px;
+        }
+        .search-button {
+            padding: 6px 12px;
+            background-color: #6495ed;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .search-button:hover {
+            background-color: #4169e1;
+        }
+        .reset-button {
+            padding: 6px 12px;
+            background-color: #ff6347;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        .reset-button:hover {
+            background-color: #ff4500;
+        }
+        .kana-text {
+            font-size: 10px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <h2>社員名簿一覧</h2>
+
+    <!-- 検索フォーム -->
+    <form method="get" action="{% url 'member_list' %}" class="search-form">
+        <input type="text" name="search" class="search-input" placeholder="氏名や部署で検索" value="{{ search_query }}">
+        <button type="submit" class="search-button">検索</button>
+
+        <!-- 検索リセットボタン（検索クエリがあるときのみ表示） -->
+        {% if search_query %}
+            <a href="{% url 'member_list' %}" class="reset-button">リセット</a>
+        {% endif %}
+    </form>
+
+    <!-- ボタン -->
+    <div class="button-container">
+        <a href="{% url 'member_create' %}" class="link-button">新規社員登録</a>
+        <a href="{% url 'top' %}" class="link-button">トップに戻る</a>
+        
+        <!-- ログアウトフォーム（POSTメソッドでログアウト） -->
+        <form method="POST" action="{% url 'logout' %}" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" class="logout-button">ログアウト</button>
+        </form>
+    </div>
+
+    <!-- 表 -->
+    <table>
+        <thead>
+            <tr>
+                <th class="user-id-column">ユーザーID</th>
+                <th>氏名</th>
+                <th>フリガナ</th>
+                <th>市町村</th>
+                <th>住所</th>
+                <th>生年月日</th>
+                <th>自宅電話番号</th>
+                <th>携帯番号</th>
+                <th>部署</th>
+                <th>入社日</th>
+                <th>定年月</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for member in members %}
+            <tr>
+                <td class="user-id-column">{{ member.user_id }}</td>
+                <td>{{ member.first_name }} {{ member.last_name }}</td>
+                <td class="kana-text">{{ member.first_name_kana }} {{ member.last_name_kana }}</td>
+                <td>{{ member.city.city }}</td>
+                <td>{{ member.address }}</td>
+                <td>{{ member.date_of_birth }}</td>
+                <td>{{ member.telephon_number }}</td>
+                <td>{{ member.cellular_phone_number }}</td>
+                <td>{{ member.department.department }}</td>
+                <td>{{ member.date_of_entry }}</td>
+                <td>{{ member.retire_age_month }}</td>
+                <td>
+                    <!-- 編集ボタン -->
+                    <a href="{% url 'member_update' member.id %}">
+                        <button class="edit-button">編集</button>
+                    </a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="16" style="text-align: center;">検索結果が見つかりませんでした。</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

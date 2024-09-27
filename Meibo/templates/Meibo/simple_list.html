@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>簡易社員名簿一覧</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            margin: 0;
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            font-size: 12px;
+        }
+        th, td {
+            padding: 6px;
+            text-align: center; /* 全てのセルを中央揃え */
+            border-bottom: 1px solid #ddd;
+            border-right: 1px solid #ddd; /* 縦線を追加 */
+        }
+        th {
+            background-color: #6495ed;
+            color: white;
+            border-right: 1px solid white;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        /* フリガナの文字サイズを小さく */
+        .kana-text {
+            font-size: 10px;
+            color: #555;
+        }
+        .button-container {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+        .link-button {
+            display: inline-block;
+            margin: 10px 10px 10px 0;
+            padding: 8px 12px;
+            background-color: #6495ed;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        .link-button:hover {
+            background-color: #4169e1;
+        }
+        .logout-button {
+            display: inline-block;
+            padding: 8px 12px;
+            background-color: #dc3545;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 14px;
+            margin-left: 10px;
+        }
+        .logout-button:hover {
+            background-color: #c82333;
+        }
+        .search-form {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+        .search-input {
+            padding: 6px;
+            width: 250px;
+            margin-right: 10px;
+        }
+        .search-button {
+            padding: 6px 12px;
+            background-color: #6495ed;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .search-button:hover {
+            background-color: #4169e1;
+        }
+        .reset-button {
+            padding: 6px 12px;
+            background-color: #ff6347;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        .reset-button:hover {
+            background-color: #ff4500;
+        }
+    </style>
+</head>
+<body>
+    <h2>簡易社員名簿一覧</h2>
+
+    <!-- 検索フォーム -->
+    <form method="get" action="{% url 'simple_member_list' %}" class="search-form">
+        <input type="text" name="search" class="search-input" placeholder="氏名や部署で検索" value="{{ search_query }}">
+        <button type="submit" class="search-button">検索</button>
+
+        <!-- 検索リセットボタン（検索クエリがあるときのみ表示） -->
+        {% if search_query %}
+            <a href="{% url 'simple_member_list' %}" class="reset-button">リセット</a>
+        {% endif %}
+    </form>
+
+    <!-- ボタン -->
+    <div class="button-container">
+        <a href="{% url 'top' %}" class="link-button">トップに戻る</a>
+        
+        <!-- ログアウトボタン -->
+        <form method="POST" action="{% url 'logout' %}" style="display: inline;">
+            {% csrf_token %}
+            <button type="submit" class="logout-button">ログアウト</button>
+        </form>
+    </div>
+
+    <!-- 表 -->
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>氏名</th>
+                <th>フリガナ</th>
+                <th>市町村</th>
+                <th>自宅電話番号</th>
+                <th>携帯電話番号</th>
+                <th>部署</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for member in members %}
+            <tr>
+                <td>{{ member.id }}</td>
+                <td>{{ member.first_name }} {{ member.last_name }}</td>
+                <td class="kana-text">{{ member.first_name_kana }} {{ member.last_name_kana }}</td>
+                <td>{{ member.city.city }}</td>
+                <td>{{ member.telephon_number }}</td>
+                <td>{{ member.cellular_phone_number }}</td>
+                <td>{{ member.department.department }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7" style="text-align: center;">検索結果が見つかりませんでした。</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

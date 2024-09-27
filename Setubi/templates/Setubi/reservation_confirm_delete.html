@@ -1,0 +1,71 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>予約削除確認</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        .container {
+            margin: 20px auto;
+            width: 60%;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .confirm-message {
+            margin-bottom: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        .confirm-button,
+        .cancel-button {
+            background-color: #dc3545;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .cancel-button {
+            background-color: #6c757d;
+        }
+        .confirm-button:hover {
+            background-color: #c82333;
+        }
+        .cancel-button:hover {
+            background-color: #5a6268;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>予約削除確認</h1>
+        <div class="confirm-message">
+            本当にこの予約を削除しますか？
+        </div>
+        <div class="button-group">
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" class="confirm-button">削除する</button>
+            </form>
+            <a href="{% url 'reservation_list' %}" class="cancel-button">キャンセル</a>
+        </div>
+    </div>
+</body>
+</html>

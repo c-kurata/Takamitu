@@ -1,0 +1,179 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>予約フォーム</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #6495ed;
+            color: white;
+            padding: 10px 20px;
+        }
+        .logo img {
+            height: 50px;
+        }
+        .title {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .container {
+            margin: 20px auto;
+            width: 80%;
+            text-align: center;
+        }
+        .form-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            text-align: center;
+            width: 60%;
+            margin: 0 auto;
+        }
+        .form-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            flex: 0 0 150px;
+            text-align: right;
+            margin-right: 10px;
+            font-size: 18px;
+        }
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            flex: 1;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 18px;
+            box-sizing: border-box;
+            text-align: left;
+        }
+        .submit-button,
+        .reset-button,
+        .cancel-button,
+        .delete-button {
+            background-color: #6495ed;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        .reset-button {
+            background-color: #ffc107;
+        }
+        .cancel-button {
+            display: inline-block;
+            text-align: center;
+            text-decoration: none;
+            background-color: #dc3545;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 5px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        .delete-button {
+            background-color: #ff6347;
+        }
+        .submit-button:hover {
+            background-color: #4169e1;
+        }
+        .reset-button:hover {
+            background-color: #e0a800;
+        }
+        .cancel-button:hover {
+            background-color: #c82333;
+        }
+        .delete-button:hover {
+            background-color: #e54d3c;
+        }
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <img src="{% static 'images/Takamitu-logo.png' %}" alt="ロゴ">
+        </div>
+        <div class="title">設備予約管理</div>
+    </div>
+
+    <div class="container">
+        <h1>予約フォーム</h1>
+
+        <div class="form-container">
+            <!-- フォーム全体のエラーメッセージ -->
+            {% if form.non_field_errors %}
+                <div class="error">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+
+            <form method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class="form-group">
+                        {{ field.label_tag }}
+                        {{ field }}
+                        {% if field.errors %}
+                            <div class="error">{{ field.errors }}</div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+                <div>
+                    <button type="submit" class="submit-button">保存</button>
+                    <button type="reset" class="reset-button">リセット</button>
+                    <a href="{% url 'reservation_list' %}" class="cancel-button">キャンセル</a>
+                </div>
+            </form>
+
+            {% if form.instance.pk %} <!-- 編集モードの場合のみ削除ボタンを表示 -->
+            <form action="{% url 'reservation_delete' form.instance.pk %}" method="post" style="margin-top: 20px;">
+                {% csrf_token %}
+                <button type="submit" class="delete-button" onclick="return confirm('本当に削除しますか？');">削除</button>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+        flatpickr("input[name='start_time']", {
+            enableTime: true,
+            dateFormat: "Y-m-d H:i",
+            time_24hr: true
+        });
+        flatpickr("input[name='end_time']", {
+            enableTime: true,
+            dateFormat: "Y-m-d H:i",
+            time_24hr: true
+        });
+    </script>
+</body>
+</html>

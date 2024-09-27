@@ -1,0 +1,63 @@
+{% load crispy_forms_tags %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>一覧画面</title>
+    <!-- Bootstrap CSSの導入 -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1 class="my-4 text-center">一覧画面</h1>
+        <form method="get" class="form-inline justify-content-center">
+            <div class="form-row align-items-center">
+                <div class="col-auto mb-2">
+                    {{ form.estimate_id|as_crispy_field }}
+                </div>
+                <div class="col-auto mb-2">
+                    {{ form.keyword|as_crispy_field }}
+                </div>
+                <div class="col-auto mb-2">
+                    {{ form.submission_date_from|as_crispy_field }}
+                </div>
+                <div class="col-auto mb-2">
+                    {{ form.submission_date_to|as_crispy_field }}
+                </div>
+                <div class="col-auto mb-2">
+                    {{ form.submit_to_name|as_crispy_field }}
+                </div>
+                <div class="col-auto mb-2">
+                    {{ form.department|as_crispy_field }}
+                </div>
+                <div class="col-auto mb-2">
+                    {{ form.created_by|as_crispy_field }}
+                </div>
+                <div class="col-auto mb-2">
+                    <button type="submit" class="btn btn-primary">検索</button>
+                </div>
+                <div class="col-auto mb-2">
+                    <a href="{% url 'list' %}" class="btn btn-secondary">リセット</a>
+                </div>
+            </div>
+        </form>
+        <ul class="list-group mt-4">
+            {% for estimate in estimates %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span>
+                        <strong>{{ estimate.estimate_name }}</strong>: {{ estimate.estimate_amount }}
+                    </span>
+                    <a href="{% url 'edit' estimate.id %}" class="btn btn-primary btn-sm">編集</a>
+                </li>
+            {% endfor %}
+        </ul>
+        <br>
+        <a href="{% url 'index' %}" class="btn btn-secondary mt-4">トップ画面に戻る</a>
+    </div>
+
+    <!-- Bootstrap JSの導入 -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

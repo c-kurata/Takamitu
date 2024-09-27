@@ -1,0 +1,233 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>社員情報更新</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f8ff;
+            margin: 0;
+            padding: 20px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #6495ed;
+            color: white;
+            padding: 10px 20px;
+        }
+        .logo img {
+            height: 50px;
+        }
+        .title {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .container {
+            width: 50%;
+            margin: 20px auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        .form-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            min-width: 150px;
+            text-align: right;
+            margin-right: 10px;
+            font-weight: bold;
+            color: #555;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            flex: 1;
+            padding: 10px;
+            margin: 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #6495ed;
+            outline: none;
+            box-shadow: 0 0 5px rgba(100, 149, 237, 0.5);
+        }
+        .profile-photo-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .profile-photo {
+            width: 150px;
+            height: auto;
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+        }
+        .button-container {
+            text-align: right;
+            margin-top: 20px;
+        }
+        button,
+        .btn {
+            background-color: #6495ed;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover,
+        .btn:hover {
+            background-color: #4169e1;
+        }
+        .back-button {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: white;
+            text-decoration: none;
+        }
+        .delete-button {
+            background-color: #ff6347;
+            margin-right: auto;
+        }
+        .delete-button:hover {
+            background-color: #e54d3c;
+        }
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 10px;
+            border: 1px solid #c3e6cb;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+    </style>
+    <script>
+        function previewImage(event) {
+            const reader = new FileReader();
+            reader.onload = function() {
+                const output = document.getElementById('profilePhotoPreview');
+                output.src = reader.result;
+                output.style.display = 'block'; // 画像がロードされたら表示
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    </script>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <img src="{% static 'images/Takamitu-logo.png' %}" alt="ロゴ">
+        </div>
+        <div class="title">名簿管理アプリ</div>
+    </div>
+    <div class="container">
+        <h2>社員情報更新</h2>
+        <a href="{% url 'member_list' %}" class="btn back-button">一覧へ戻る</a>
+        
+        {% if success %}
+            <div class="success-message">
+                情報が更新されました。
+            </div>
+        {% endif %}
+        
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="profile_photo">顔写真</label>
+                {% if form.instance.profile_photo %}
+                    <img id="profilePhotoPreview" src="{{ form.instance.profile_photo.url }}" alt="写真プレビュー" class="profile-photo">
+                {% else %}
+                    <img id="profilePhotoPreview" src="#" alt="写真プレビュー" class="profile-photo" style="display: none;">
+                {% endif %}
+                <input type="file" name="profile_photo" id="profile_photo" accept="image/*" onchange="previewImage(event)">
+            </div>
+            <div class="form-group">
+                {{ form.user_id.label_tag }}
+                {{ form.user_id }}
+            </div>
+            <div class="form-group">
+                {{ form.first_name.label_tag }}
+                {{ form.first_name }}
+            </div>
+            <div class="form-group">
+                {{ form.last_name.label_tag }}
+                {{ form.last_name }}
+            </div>
+            <div class="form-group">
+                {{ form.first_name_kana.label_tag }}
+                {{ form.first_name_kana }}
+            </div>
+            <div class="form-group">
+                {{ form.last_name_kana.label_tag }}
+                {{ form.last_name_kana }}
+            </div>
+            <div class="form-group">
+                {{ form.city.label_tag }}
+                {{ form.city }}
+            </div>
+            <div class="form-group">
+                {{ form.address.label_tag }}
+                {{ form.address }}
+            </div>
+            <div class="form-group">
+                {{ form.date_of_birth.label_tag }}
+                {{ form.date_of_birth }}
+            </div>
+            <div class="form-group">
+                {{ form.telephon_number.label_tag }}
+                {{ form.telephon_number }}
+            </div>
+            <div class="form-group">
+                {{ form.cellular_phone_number.label_tag }}
+                {{ form.cellular_phone_number }}
+            </div>
+            <div class="form-group">
+                {{ form.email_address.label_tag }}
+                {{ form.email_address }}
+            </div>
+            <div class="form-group">
+                {{ form.department.label_tag }}
+                {{ form.department }}
+            </div>
+            <div class="form-group">
+                {{ form.date_of_entry.label_tag }}
+                {{ form.date_of_entry }}
+            </div>
+            <div class="form-group">
+                {{ form.retire_age_month.label_tag }}
+                {{ form.retire_age_month }}
+            </div>
+            <div class="form-group">
+                {{ form.remark.label_tag }}
+                {{ form.remark }}
+            </div>
+            <div class="button-container">
+                <button type="submit">更新</button>
+                <button type="reset">取消</button>
+                <button type="button" class="delete-button" onclick="if(confirm('本当に削除しますか？')) { window.location.href='{% url 'member_delete' member.id %}'; }">削除</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

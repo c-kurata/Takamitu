@@ -1,0 +1,126 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>設備予約一覧</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #6495ed;
+            color: white;
+            padding: 10px 20px;
+        }
+        .logo img {
+            height: 50px;  /* ロゴの高さを50pxに統一 */
+        }
+        .title {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .container {
+            margin: 20px auto;
+            width: 80%;
+            text-align: center;
+        }
+        .table-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: left;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .link-button {
+            display: inline-block;
+            margin: 20px 10px;
+            padding: 14px 28px;
+            background-color: #6495ed;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .link-button:hover {
+            background-color: #4169e1;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <img src="{% static 'images/Takamitu-logo.png' %}" alt="ロゴ">
+        </div>
+        <div class="title">設備予約アプリ</div>
+    </div>
+
+    <div class="container">
+        <h1>予約一覧</h1>
+        <div class="table-container">
+            <table>
+                <tr>
+                    <th>設備</th>
+                    <th>使用場所</th>
+                    <th>開始日時</th>
+                    <th>終了日時</th>
+                    <th>予約者</th>
+                    <th>編集</th>
+                </tr>
+                {% for reservation in reservations %}
+                <tr>
+                    <td>{{ reservation.equipment }}</td>
+                    <td>{{ reservation.facility }}</td>
+                    <td>
+                        {{ reservation.start_time|date:"Y年m月d日" }}
+                        <span style="display: inline-block; width: 10px;"></span>
+                        {{ reservation.start_time|date:"H:i" }}
+                    </td>
+                    <td>
+                        {{ reservation.end_time|date:"Y年m月d日" }}
+                        <span style="display: inline-block; width: 10px;"></span>
+                        {{ reservation.end_time|date:"H:i" }}
+                    </td>
+                    <td>{{ reservation.user.name }}</td>
+                    <td>
+                        <a href="{% url 'reservation_update' reservation.pk %}">編集</a>
+                    </td>
+                </tr>
+                {% endfor %}
+                {% if not reservations %}
+                <tr>
+                    <td colspan="6">現在、予約はありません。</td>
+                </tr>
+                {% endif %}
+            </table>
+            <!-- 新規予約作成ボタン -->
+            <a href="{% url 'reservation_create' %}" class="link-button">新規予約作成</a>
+            <!-- カレンダーボタンを追加 -->
+            <a href="{% url 'calendar' %}" class="link-button">カレンダーを表示</a>
+        </div>
+    </div>
+</body>
+</html>

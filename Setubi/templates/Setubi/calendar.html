@@ -1,0 +1,96 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>予約カレンダー</title>
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.css' rel='stylesheet' />
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/locales-all.min.js'></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #6495ed;
+            color: white;
+            padding: 10px 20px;
+        }
+        .logo img {
+            height: 50px;
+        }
+        .title {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .container {
+            margin: 20px auto;
+            width: 80%;
+            text-align: center;
+        }
+        #calendar {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .link-button {
+            display: inline-block;
+            margin: 20px 10px;
+            padding: 12px 30px;
+            background-color: #6495ed;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .link-button:hover {
+            background-color: #4169e1;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <img src="{% static 'images/Takamitu-logo.png' %}" alt="ロゴ">
+        </div>
+        <div class="title">設備予約カレンダー</div>
+    </div>
+
+    <div class="container">
+        <h1>予約カレンダー</h1>
+        <!-- 予約一覧に戻るボタンを追加 -->
+        <a href="{% url 'reservation_list' %}" class="link-button">予約一覧に戻る</a>
+        <div id="calendar"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                locale: 'ja',  // 日本語設定
+                initialView: 'dayGridMonth',  // 月表示に設定
+                events: '/reservation/api/reservations/',  // 予約データ取得用URL
+                displayEventTime: false,  // 時間を表示しないように設定
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'  // 表示切り替えボタン
+                },
+                eventClick: function(info) {
+                    // クリックしたイベントの詳細ページへ遷移
+                    window.location.href = '/reservation' + info.event.id + '/';
+                }
+            });
+            calendar.render();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>削除確認</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            width: 60%;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .button-container {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center; /* 中央揃え */
+            gap: 10px; /* ボタン間の間隔 */
+        }
+        .btn {
+            background-color: #dc3545; /* Bootstrapの危険色を使用 */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none; /* リンクの下線を消す */
+            font-size: 16px;
+        }
+        .btn:hover {
+            background-color: #c82333; /* ホバーカラーを少し濃くする */
+        }
+        .btn-cancel {
+            background-color: #6c757d; /* グレー色を使用 */
+        }
+        .btn-cancel:hover {
+            background-color: #5a6268; /* ホバーカラーを少し濃くする */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>削除確認</h2>
+        <p>本当に <strong>{{ member.first_name }} {{ member.last_name }}</strong> を削除してもよろしいですか？</p>
+        
+        <form method="post">
+            {% csrf_token %}
+            <div class="button-container">
+                <!-- 削除ボタンを左側に配置 -->
+                <button type="submit" class="btn">削除</button>
+                <a href="{% url 'member_list' %}" class="btn btn-cancel">キャンセル</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

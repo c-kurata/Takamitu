@@ -1,7 +1,12 @@
+# Takamitu/urls.py
+
 from django.contrib import admin
-from django.urls import path, include  # include をインポート
+from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('Menu.urls')),  # App アプリの URL 設定
+    path('menu/', include('Menu.urls')),  # MenuアプリのURLをインクルード
+    path('meibo/', include('Meibo.urls')),  # MeiboアプリのURLをインクルード
+    path('setubi/', include('Setubi.urls')),  # SetubiアプリのURLをインクルード
+    path('mitumori/', include('Mitumori.urls')),  # MitumoriアプリのURLをインクルード
 ]

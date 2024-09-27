@@ -1,7 +1,6 @@
-# Menu/urls.py
-from django.urls import path, include
+from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('menu/', views.menu, name='menu'),  # メニュー画面のパスを設定
+    path('', views.menu, name='menu'),  # トップページとしてメニュー画面のパスを設定
 ]

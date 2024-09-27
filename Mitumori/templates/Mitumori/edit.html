@@ -1,0 +1,90 @@
+{% load crispy_forms_tags %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>見積編集</title>
+    <!-- Bootstrap CSSの導入 -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    {% load static %}
+</head>
+<body>
+    <div class="container">
+        <h1 class="my-4 text-center">見積編集</h1>
+        <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="pdf_file">PDFファイルをアップロードして自動入力:</label>
+                <input type="file" class="form-control-file" id="pdf_file" name="pdf_file">
+                <button type="submit" class="btn btn-primary mt-2">アップロード</button>
+            </div>
+        </form>
+        <hr>
+        <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form.estimate_name|as_crispy_field }}
+                </div>
+                <div class="col-md-6">
+                    {{ form.submit_to_name|as_crispy_field }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form.estimate_amount|as_crispy_field }}
+                </div>
+                <div class="col-md-6">
+                    {{ form.summary|as_crispy_field }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form.created_by|as_crispy_field }}
+                </div>
+                <div class="col-md-6">
+                    {{ form.last_updated_by|as_crispy_field }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form.admin_approval_status|as_crispy_field }}
+                </div>
+                <div class="col-md-6">
+                    {{ form.department|as_crispy_field }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form.submission_date|as_crispy_field }}
+                </div>
+                <div class="col-md-6">
+                    {{ form.attachment|as_crispy_field }}
+                </div>
+            </div>
+            <button type="submit" class="btn btn-success mt-3">更新</button>
+        </form>
+        <br>
+        <div class="d-flex justify-content-between">
+            <a href="{% url 'index' %}" class="btn btn-secondary mt-4">トップ画面に戻る</a>
+            <a href="{% url 'list' %}" class="btn btn-secondary mt-4">一覧画面に戻る</a>
+        </div>
+        {% if form.errors %}
+            <div class="alert alert-danger mt-4">
+                <ul>
+                    {% for field, errors in form.errors.items %}
+                        {% for error in errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Bootstrap JSの導入 -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
