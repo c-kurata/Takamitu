@@ -37,7 +37,8 @@
                     <button type="submit" class="btn btn-primary">検索</button>
                 </div>
                 <div class="col-auto mb-2">
-                    <a href="{% url 'list' %}" class="btn btn-secondary">リセット</a>
+                    <!-- 'list' を 'mitumori_list' に修正 -->
+                    <a href="{% url 'mitumori_list' %}" class="btn btn-secondary">リセット</a>
                 </div>
             </div>
         </form>
@@ -47,12 +48,14 @@
                     <span>
                         <strong>{{ estimate.estimate_name }}</strong>: {{ estimate.estimate_amount }}
                     </span>
-                    <a href="{% url 'edit' estimate.id %}" class="btn btn-primary btn-sm">編集</a>
+                    <!-- 'edit' を 'mitumori_edit' に修正 -->
+                    <a href="{% url 'mitumori_edit' estimate.id %}" class="btn btn-primary btn-sm">編集</a>
                 </li>
             {% endfor %}
         </ul>
         <br>
-        <a href="{% url 'index' %}" class="btn btn-secondary mt-4">トップ画面に戻る</a>
+        <!-- 'index' を 'mitumori_index' に修正 -->
+        <a href="{% url 'mitumori_index' %}" class="btn btn-secondary mt-4">トップ画面に戻る</a>
     </div>
 
     <!-- Bootstrap JSの導入 -->

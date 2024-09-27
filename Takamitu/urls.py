@@ -6,8 +6,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('menu/', include('Menu.urls')),  # MenuアプリのURLをインクルード
     path('meibo/', include('Meibo.urls')),  # MeiboアプリのURLをインクルード
-    # 'setubi/' のパスは不要になるため、削除またはコメントアウト
-    # path('setubi/', include('Setubi.urls')),  
     path('mitumori/', include('Mitumori.urls')),  # MitumoriアプリのURLをインクルード
     path('reservation/', include('Setubi.urls')),  # SetubiアプリのURLを予約用にリダイレクト
+    path('', lambda request: redirect('login'), name='home'),  # 最初の画面をログイン画面に設定
 ]

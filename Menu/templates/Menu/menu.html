@@ -100,9 +100,10 @@
     <div class="menu-container">
         <div class="menu-title">メニュー</div>
         <div class="button-container">
-            <button class="menu-button">見積り管理</button>
-            <button class="menu-button">設備予約管理</button>
-            <button class="menu-button">社員名簿管理</button>
+            <!-- 各アプリへのリンクを設定 -->
+            <button class="menu-button" onclick="location.href='{% url 'mitumori_index' %}'">見積り管理</button>
+            <button class="menu-button" onclick="location.href='{% url 'reservation_list' %}'">設備予約管理</button>
+            <button class="menu-button" onclick="location.href='{% url 'member_list' %}'">社員名簿管理</button>
             <button class="menu-button">工事中</button>
             <button class="menu-button">工事中</button>
             <button class="menu-button">工事中</button>

@@ -1,11 +1,10 @@
 from django.urls import path
-from django.contrib.auth import views as auth_views
-from Meibo import views  # 一般ユーザー登録のビューをインポート
-from django.shortcuts import redirect  # 追加
+from . import views  # views モジュールをインポート
+from django.shortcuts import redirect  # リダイレクトのためにインポート
 
 urlpatterns = [
     # トップページにアクセスしたときにログインページにリダイレクト
-    path('', lambda request: redirect('login')),  # '/' にアクセス時、ログインページへリダイレクト
+    path('', lambda request: redirect('login'), name='home'),  # ルートURLにアクセス時、ログインページへリダイレクト
 
     # 一般ユーザー用のログインとログアウト
     path('login/', views.login_view, name='login'),  # カスタムログインビュー
@@ -23,4 +22,7 @@ urlpatterns = [
     # トップページ
     path('top/', views.top_view, name='top'),  # トップページ
     path('simple-list/', views.simple_member_list_view, name='simple_member_list'),  # 一般ユーザー用の簡易メンバー一覧
+    
+    # メニューからのリダイレクト用
+    path('redirect/', views.meibo_redirect, name='meibo_redirect'),  # リダイレクト用のパスを追加
 ]

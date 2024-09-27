@@ -1,8 +1,9 @@
 {% load crispy_forms_tags %}
 
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 <head>
+    <meta charset="UTF-8">
     <title>見積作成</title>
     <!-- Bootstrap CSSの導入 -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
@@ -11,6 +12,8 @@
 <body>
     <div class="container">
         <h1 class="my-4 text-center">見積作成</h1>
+
+        <!-- PDFアップロードフォーム -->
         <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
             {% csrf_token %}
             <div class="form-group">
@@ -19,7 +22,10 @@
                 <button type="submit" class="btn btn-primary mt-2">アップロード</button>
             </div>
         </form>
+        
         <hr>
+        
+        <!-- 見積りフォーム -->
         <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
             {% csrf_token %}
             <div class="row">
@@ -56,8 +62,12 @@
             </div>
             <button type="submit" class="btn btn-success mt-3">登録</button>
         </form>
+        
+        <!-- トップ画面へのリンク -->
         <br>
-        <a href="{% url 'index' %}" class="btn btn-secondary mt-4">トップ画面に戻る</a>
+        <a href="{% url 'mitumori_index' %}" class="btn btn-secondary mt-4">トップ画面に戻る</a>
+
+        <!-- エラーメッセージの表示 -->
         {% if form.errors %}
             <div class="alert alert-danger mt-4">
                 <ul>

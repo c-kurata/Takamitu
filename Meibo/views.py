@@ -7,10 +7,9 @@ from django.db.models import Q
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, authenticate
-from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.views import LogoutView
 
 # 社員の新規作成ビュー (クラスベース)
 class MemberCreateView(LoginRequiredMixin, View):  # ログイン必須
@@ -77,11 +76,8 @@ class MemberUpdateView(LoginRequiredMixin, View):
         form = MemberForm(request.POST, request.FILES, instance=member)
         if form.is_valid():
             form.save()
-            # 更新後も同じページに留まり、メッセージを表示する
             messages.success(request, "社員情報が正常に更新されました。")
-            # リダイレクトではなく、同じテンプレートを再度レンダリングして表示
             return render(request, 'Meibo/update.html', {'form': form, 'member': member, 'success': True})
-
         messages.error(request, "入力にエラーがあります。もう一度確認してください。")
         return render(request, 'Meibo/update.html', {'form': form, 'member': member, 'success': False})
 
@@ -103,7 +99,7 @@ def register(request):
             user = form.save()
             login(request, user)  # ユーザーを登録後、自動的にログインさせる
             messages.success(request, "アカウントが正常に作成されました。")
-            return redirect('top')  # トップページにリダイレクト
+            return redirect('menu')  # ログイン後はメニュー画面にリダイレクト
     else:
         form = UserCreationForm()
     return render(request, 'registration/register.html', {'form': form})
@@ -120,11 +116,8 @@ def login_view(request):
                 login(request, user)
                 messages.success(request, f"ようこそ、{username} さん！")
                 
-                # 管理者と一般ユーザーでリダイレクト先を変更
-                if user.is_superuser or user.is_staff:
-                    return redirect('top')  # 管理者用のトップページ
-                else:
-                    return redirect('simple_member_list')  # 一般ユーザー用のトップページ
+                # ログイン後はメニュー画面にリダイレクト
+                return redirect('menu')
         else:
             messages.error(request, "ユーザー名かパスワードが正しくありません。")
     else:
@@ -134,3 +127,12 @@ def login_view(request):
 # ログアウトビュー (Django標準のLogoutViewを使用)
 class CustomLogoutView(LogoutView):
     template_name = 'registration/logged_out.html'
+
+# メニューからリダイレクト用のビュー
+@login_required
+def meibo_redirect(request):
+    # 管理者用と一般ユーザー用でリダイレクト先を切り替える
+    if request.user.is_staff or request.user.is_superuser:
+        return redirect('member_list')  # 管理者用の社員名簿一覧ページ
+    else:
+        return redirect('simple_member_list')  # 一般ユーザー用の簡易社員名簿一覧ページ
