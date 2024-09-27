@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Takamitu メニュー</title>
+    {% load static %}  <!-- 静的ファイルを読み込むためのタグ -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}"> <!-- CSS ファイルを読み込み -->
+    <style>
+<style>
+    /* 全体のスタイル */
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f0f0f0;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start; /* 修正: 上寄せにするために変更 */
+        height: 100vh;
+    }
+    /* ヘッダーのスタイル */
+    .header {
+        width: 100%;
+        background-color: #6495ed; /* 帯の色を設定 */
+        height: 58px; /* Meibo/top.html に合わせた帯の高さ */
+        padding: 10px 20px; /* 上下と左右の余白を設定 */
+        display: flex;
+        align-items: center;
+        position: relative; /* タイトルを絶対配置するための基準にする */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* ヘッダーに影を追加 */
+    }
+    .header img {
+        height: 50px; /* ロゴの高さを設定 */
+        margin-left: 20px; /* 追加: ロゴを右に移動するための左余白 */
+    }
+    .header .title {
+        font-size: 24px; /* タイトルのフォントサイズ */
+        font-weight: bold; /* 太字にする */
+        color: #fff; /* テキストの色を白に設定 */
+        position: absolute; /* 絶対位置にする */
+        left: 50%; /* 左から50% */
+        transform: translateX(-50%); /* 中央に配置するために50%戻す */
+    }
+    /* メニュー全体のスタイル */
+    .menu-container {
+        text-align: center;
+        margin-top: 50px; /* ヘッダーとメニューの間の余白 */
+    }
+    /* ロゴのスタイル */
+    .logo {
+        margin-bottom: 10px; /* ロゴとタイトルの間の余白を減らす */
+    }
+    .logo img {
+        width: 500px;  /* ロゴ画像の幅を調整 */
+    }
+    /* メニュータイトルのスタイル */
+    .menu-title {
+        font-size: 36px;
+        font-weight: bold;
+        margin-bottom: 40px;  /* メニュータイトルの余白 */
+    }
+    /* ボタンコンテナのスタイル */
+    .button-container {
+        display: flex;
+        justify-content: center;
+        gap: 30px;  /* ボタン間の間隔 */
+        flex-wrap: wrap; /* 追加: ボタンを複数行に折り返す */
+        max-width: 800px; /* 全体の幅を制限して中央に配置 */
+        margin: 0 auto; /* 自動余白で中央寄せ */
+    }
+    /* メニューボタンのスタイル */
+    .menu-button {
+        background-color: #3498db;
+        color: #fff;
+        padding: 20px 30px;
+        font-size: 20px;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s ease, transform 0.3s ease;
+        width: 200px; /* ボタンの幅を設定して同じサイズに揃える */
+        margin-bottom: 20px; /* 追加: ボタン同士の上下の余白を追加 */
+    }
+    .menu-button:hover {
+        background-color: #2980b9;
+        transform: translateY(-3px);  /* ホバー時のアニメーション */
+    }
+</style>
+</head>
+<body>
+    <!-- ヘッダー部分 -->
+    <div class="header">
+        <img src="{% static 'images/Takamitu-logo.png' %}" alt="Takamituロゴ">
+        <div class="title">Ｔａｋａｍｉｔｕ株式会社</div>
+    </div>
+
+    <!-- メインコンテンツ -->
+    <div class="menu-container">
+        <div class="menu-title">メニュー</div>
+        <div class="button-container">
+            <button class="menu-button">見積り管理</button>
+            <button class="menu-button">設備予約管理</button>
+            <button class="menu-button">社員名簿管理</button>
+            <button class="menu-button">工事中</button>
+            <button class="menu-button">工事中</button>
+            <button class="menu-button">工事中</button>
+        </div>
+    </div>
+</body>
+</html>
