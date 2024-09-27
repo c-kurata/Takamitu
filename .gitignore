@@ -1,0 +1,8 @@
+# .gitignoreファイルの内容
+myenv/
+*.pyc
+__pycache__/
+db.sqlite3
+/media/
+.vscode/
+.env
