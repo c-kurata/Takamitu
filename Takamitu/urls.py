@@ -10,5 +10,4 @@ urlpatterns = [
     # path('setubi/', include('Setubi.urls')),  
     path('mitumori/', include('Mitumori.urls')),  # MitumoriアプリのURLをインクルード
     path('reservation/', include('Setubi.urls')),  # SetubiアプリのURLを予約用にリダイレクト
-    path('', lambda request: redirect('reservation_list'), name='home'),  # ルートURLにアクセス時に予約一覧にリダイレクト
 ]
