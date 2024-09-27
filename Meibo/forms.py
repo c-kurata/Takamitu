@@ -1,7 +1,14 @@
 from django import forms
-from .models import MemberList
+from .models import MemberList, City  # Cityモデルをインポート
 
 class MemberForm(forms.ModelForm):
+    city = forms.ModelChoiceField(
+        queryset=City.objects.all(),  # Cityモデルの全レコードを選択肢として設定
+        label='住所（市町村）',
+        widget=forms.Select(attrs={'style': 'width: 200px;'}),
+        required=True
+    )
+
     class Meta:
         model = MemberList
         fields = [
@@ -46,7 +53,6 @@ class MemberForm(forms.ModelForm):
             'last_name': forms.TextInput(attrs={'placeholder': '名', 'style': 'width: 200px;'}),
             'first_name_kana': forms.TextInput(attrs={'placeholder': '氏カナ', 'style': 'width: 200px;'}),
             'last_name_kana': forms.TextInput(attrs={'placeholder': '名カナ', 'style': 'width: 200px;'}),
-            'city': forms.TextInput(attrs={'placeholder': '市町村', 'style': 'width: 200px;'}),
             'address': forms.TextInput(attrs={'placeholder': '住所詳細', 'style': 'width: 200px;'}),
             'date_of_birth': forms.DateInput(attrs={'type': 'date', 'style': 'width: 200px;'}),
             'telephon_number': forms.TextInput(attrs={'placeholder': 'ハイフン無しの0から9半角数字', 'style': 'width: 200px;'}),
