@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -6,19 +8,38 @@
     <title>トップ画面</title>
     <!-- Bootstrap CSSの導入 -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    {% load static %}
+    <style>
+        /* 上下の余白を減らして全体的に上に上げる */
+        body {
+            padding-top: 30px; /* 全体を少し上に */
+            padding-bottom: 30px; /* 余白を統一 */
+        }
+
+        .container {
+            margin-top: -50px; /* 全体をさらに上に上げる */
+        }
+
+        .menu-button {
+            margin-top: 30px; /* メニューに戻るボタンの余白を追加 */
+        }
+
+        .main-buttons {
+            margin-bottom: 40px; /* メインボタンの余白を調整 */
+        }
+    </style>
 </head>
 <body class="d-flex flex-column justify-content-center align-items-center min-vh-100">
     <div class="container text-center">
         <h1 class="my-4">見積管理</h1>
-        <div class="d-flex justify-content-around mb-4">
-            <!-- URL の名前を修正 -->
+        <div class="main-buttons d-flex justify-content-around mb-4">
             <button onclick="location.href='{% url 'mitumori_create' %}'" class="btn btn-primary btn-lg">登録画面へ</button>
             <button onclick="location.href='{% url 'mitumori_list' %}'" class="btn btn-secondary btn-lg">一覧画面へ</button>
         </div>
         <div class="text-center">
             <img src="{% static 'images/Takamitu-logo.png' %}" alt="Takamitu Logo" class="img-fluid" style="width: 500px;">
         </div>
+        <!-- メニューに戻るボタンを追加し、少し下に下げる -->
+        <button onclick="location.href='{% url 'menu' %}'" class="btn btn-info btn-lg menu-button">メニューに戻る</button>
     </div>
 
     <!-- Bootstrap JSの導入 -->

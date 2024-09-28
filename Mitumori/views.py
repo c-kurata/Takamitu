@@ -4,6 +4,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .forms import EstimateForm, EstimateSearchForm
 from .models import Estimate
 from django.db.models import Q  # フィルタリングで使用
+from django.contrib.auth.decorators import login_required  # ログイン必須デコレータ
+from django.contrib.auth import logout  # ログアウト機能
 
 # PDFファイルからテキストを抽出する関数
 def extract_text_from_pdf(file):
@@ -14,10 +16,12 @@ def extract_text_from_pdf(file):
     return text
 
 # トップページの表示
+@login_required
 def index(request):
     return render(request, 'Mitumori/index.html')
 
 # 見積もり作成ページの処理
+@login_required
 def create(request):
     if request.method == 'POST':
         pdf_file = request.FILES.get('pdf_file')  # PDFファイルを取得
@@ -32,9 +36,9 @@ def create(request):
                 'department': 1,  # ここに正しい部署IDを設定（適切に変更してください）
                 'submission_date': '2024-07-01',  # 提出日を設定（適宜変更してください）
             }
-            form = EstimateForm(data, exclude_fields=['last_updated_by', 'admin_approval_status'])
+            form = EstimateForm(initial=data)  # PDFから抽出したデータを初期値としてフォームに設定
         else:
-            form = EstimateForm(request.POST, request.FILES, exclude_fields=['last_updated_by', 'admin_approval_status'])
+            form = EstimateForm(request.POST, request.FILES)
         
         if form.is_valid():
             instance = form.save(commit=False)
@@ -45,10 +49,11 @@ def create(request):
         else:
             print(form.errors)  # エラーメッセージをコンソールに表示
     else:
-        form = EstimateForm(exclude_fields=['last_updated_by', 'admin_approval_status'])
+        form = EstimateForm()
     return render(request, 'Mitumori/create.html', {'form': form})
 
 # 見積もりリスト表示と検索
+@login_required
 def list_view(request):
     form = EstimateSearchForm(request.GET or None)  # 検索フォームを取得
     estimates = Estimate.objects.all()  # すべての見積もりを取得
@@ -59,7 +64,7 @@ def list_view(request):
         if form.cleaned_data['keyword']:
             estimates = estimates.filter(estimate_name__icontains=form.cleaned_data['keyword'])
         if form.cleaned_data['submit_to_name']:
-            estimates = estimates.filter(submit_to_name__icontains=form.cleaned_data['submit_to_name'])
+            estimates = estimates.filter(submit_to_name__icontains(form.cleaned_data['submit_to_name']))
         if form.cleaned_data['department']:
             estimates = estimates.filter(department=form.cleaned_data['department'])
         if form.cleaned_data['created_by']:
@@ -72,6 +77,7 @@ def list_view(request):
     return render(request, 'Mitumori/list.html', {'form': form, 'estimates': estimates})
 
 # 見積もり編集ページの処理
+@login_required
 def edit(request, id):
     estimate = get_object_or_404(Estimate, id=id)  # 見積もりを取得、なければ404エラー
     if request.method == 'POST':
@@ -84,3 +90,14 @@ def edit(request, id):
     else:
         form = EstimateForm(instance=estimate)
     return render(request, 'Mitumori/edit.html', {'form': form})
+
+# メニュー画面の表示
+@login_required
+def menu_view(request):
+    return render(request, 'Menu/menu.html')
+
+# ログアウト処理
+@login_required
+def logout_view(request):
+    logout(request)
+    return redirect('/meibo/login/')  # ログアウト後のリダイレクト先を設定
