@@ -42,19 +42,19 @@ class MemberForm(forms.ModelForm):
         }
         widgets = {
             'user_id': forms.TextInput(attrs={'placeholder': 'ユーザーIDを入力', 'style': 'width: 200px;'}),
-            'first_name': forms.TextInput(attrs={'placeholder': '氏', 'style': 'width: 200px;'}),
-            'last_name': forms.TextInput(attrs={'placeholder': '名', 'style': 'width: 200px;'}),
-            'first_name_kana': forms.TextInput(attrs={'placeholder': '氏カナ', 'style': 'width: 200px;'}),
-            'last_name_kana': forms.TextInput(attrs={'placeholder': '名カナ', 'style': 'width: 200px;'}),
-            'address': forms.TextInput(attrs={'placeholder': '住所詳細', 'style': 'width: 200px;'}),
+            'first_name': forms.TextInput(attrs={'placeholder': '名', 'style': 'width: 200px;'}),
+            'last_name': forms.TextInput(attrs={'placeholder': '姓', 'style': 'width: 200px;'}),
+            'first_name_kana': forms.TextInput(attrs={'placeholder': '氏名カナ（名）', 'style': 'width: 200px;'}),
+            'last_name_kana': forms.TextInput(attrs={'placeholder': '氏名カナ（姓）', 'style': 'width: 200px;'}),
+            'address': forms.TextInput(attrs={'placeholder': '住所詳細', 'style': 'width: 400px;'}),  # 住所詳細の幅を調整
             'date_of_birth': forms.DateInput(attrs={'type': 'date', 'style': 'width: 200px;'}),
             'telephon_number': forms.TextInput(attrs={'placeholder': 'ハイフン無しの0から9半角数字', 'style': 'width: 200px;'}),
             'cellular_phone_number': forms.TextInput(attrs={'placeholder': 'ハイフン無しの0から9半角数字', 'style': 'width: 200px;'}),
-            'email_address': forms.EmailInput(attrs={'placeholder': 'メールアドレス', 'style': 'width: 200px;'}),
+            'email_address': forms.EmailInput(attrs={'placeholder': 'メールアドレス', 'style': 'width: 300px;'}),
             'department': forms.Select(attrs={'style': 'width: 200px;'}),  # 部署の選択フィールドも調整
             'date_of_entry': forms.DateInput(attrs={'type': 'date', 'style': 'width: 200px;'}),
             'retire_age_month': forms.TextInput(attrs={'placeholder': 'yyyy/MM', 'style': 'width: 200px;'}),
-            'remark': forms.Textarea(attrs={'placeholder': '備考', 'rows': 3, 'style': 'width: 200px;'}),  # 備考も調整
+            'remark': forms.Textarea(attrs={'placeholder': '備考', 'rows': 3, 'style': 'width: 400px;'}),  # 備考も調整
             'profile_photo': forms.ClearableFileInput(attrs={'style': 'width: 200px;'}),
         }
     

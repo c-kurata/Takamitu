@@ -124,14 +124,32 @@
     </style>
     <script>
         function previewImage(event) {
+            const fileInput = event.target;
+            const file = fileInput.files[0];
             const reader = new FileReader();
+
             reader.onload = function() {
-                const output = document.getElementById('profilePhotoPreview');
-                output.src = reader.result;
-                output.style.display = 'block'; // 画像がロードされたら表示
+                const preview = document.getElementById('profilePhotoPreview');
+                preview.src = reader.result;
+                preview.style.display = 'block'; // 画像を表示
+            };
+
+            // 画像が選択された場合のみ読み込む
+            if (file) {
+                reader.readAsDataURL(file);
             }
-            reader.readAsDataURL(event.target.files[0]);
         }
+
+        // ページが読み込まれたときに既存の写真をプレビューに表示する
+        document.addEventListener('DOMContentLoaded', function() {
+            const profilePhoto = "{{ form.instance.profile_photo.url }}"; // 既存の画像のURLを取得
+            const preview = document.getElementById('profilePhotoPreview');
+
+            if (profilePhoto) {
+                preview.src = profilePhoto;
+                preview.style.display = 'block'; // 画像を表示
+            }
+        });
     </script>
 </head>
 <body>
@@ -155,11 +173,10 @@
             {% csrf_token %}
             <div class="form-group">
                 <label for="profile_photo">顔写真</label>
-                {% if form.instance.profile_photo %}
-                    <img id="profilePhotoPreview" src="{{ form.instance.profile_photo.url }}" alt="写真プレビュー" class="profile-photo">
-                {% else %}
+                <div class="profile-photo-container">
+                    <!-- プレビューを表示するための img タグ -->
                     <img id="profilePhotoPreview" src="#" alt="写真プレビュー" class="profile-photo" style="display: none;">
-                {% endif %}
+                </div>
                 <input type="file" name="profile_photo" id="profile_photo" accept="image/*" onchange="previewImage(event)">
             </div>
             <div class="form-group">

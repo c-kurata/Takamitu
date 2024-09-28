@@ -8,7 +8,7 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.views import LogoutView
 
 # 社員の新規作成ビュー (クラスベース)
@@ -77,9 +77,9 @@ class MemberUpdateView(LoginRequiredMixin, View):
         if form.is_valid():
             form.save()
             messages.success(request, "社員情報が正常に更新されました。")
-            return render(request, 'Meibo/update.html', {'form': form, 'member': member, 'success': True})
+            return redirect('member_list')  # 更新後、メンバー一覧ページにリダイレクト
         messages.error(request, "入力にエラーがあります。もう一度確認してください。")
-        return render(request, 'Meibo/update.html', {'form': form, 'member': member, 'success': False})
+        return render(request, 'Meibo/update.html', {'form': form, 'member': member})
 
 # メンバー情報の削除ビュー
 @login_required
@@ -127,6 +127,9 @@ def login_view(request):
 # ログアウトビュー (Django標準のLogoutViewを使用)
 class CustomLogoutView(LogoutView):
     template_name = 'registration/logged_out.html'
+    
+    def get_next_page(self):
+        return reverse('login')  # ログアウト後にログインページにリダイレクト
 
 # メニューからリダイレクト用のビュー
 @login_required
