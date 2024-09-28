@@ -27,6 +27,7 @@
         padding: 10px 20px; /* 上下と左右の余白を設定 */
         display: flex;
         align-items: center;
+        justify-content: space-between; /* 修正: ログアウトボタンとの配置のため */
         position: relative; /* タイトルを絶対配置するための基準にする */
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* ヘッダーに影を追加 */
     }
@@ -41,6 +42,20 @@
         position: absolute; /* 絶対位置にする */
         left: 50%; /* 左から50% */
         transform: translateX(-50%); /* 中央に配置するために50%戻す */
+    }
+    .logout-button {
+        background-color: #dc3545; /* ログアウトボタンの色 */
+        color: white; /* テキストの色 */
+        padding: 8px 12px; /* ボタンの内側の余白 */
+        text-decoration: none; /* テキスト装飾をなしに */
+        border-radius: 5px; /* 角を丸くする */
+        font-size: 18px; /* フォントサイズ */
+        border: none; /* ボーダーを消す */
+        cursor: pointer; /* マウスを指カーソルに */
+        transition: background-color 0.3s ease; /* 背景色変更のアニメーション */
+    }
+    .logout-button:hover {
+        background-color: #c82333; /* ホバー時の背景色 */
     }
     /* メニュー全体のスタイル */
     .menu-container {
@@ -94,6 +109,11 @@
     <div class="header">
         <img src="{% static 'images/Takamitu-logo.png' %}" alt="Takamituロゴ">
         <div class="title">Ｔａｋａｍｉｔｕ株式会社</div>
+        <!-- ログアウトボタンを追加 -->
+        <form method="POST" action="{% url 'logout' %}" style="margin-right: 20px;"> <!-- ログアウト URL にリダイレクト -->
+            {% csrf_token %}
+            <button type="submit" class="logout-button">ログアウト</button>
+        </form>
     </div>
 
     <!-- メインコンテンツ -->
