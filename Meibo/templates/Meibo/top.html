@@ -77,6 +77,8 @@
                 {% csrf_token %}
                 <button type="submit" class="logout-button">ログアウト</button>
             </form>
+            <!-- メニューに戻るボタンを追加 -->
+            <a href="{% url 'menu' %}" class="link-button">メニューに戻る</a>
         </div>
     </div>
 

@@ -134,7 +134,15 @@ STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
 
+# Static filesを運用環境で集約するディレクトリの指定
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# ログインとログアウトの設定
+LOGIN_URL = '/meibo/login/'  # ログインページのURL
+LOGIN_REDIRECT_URL = '/meibo/top/'  # ログイン後のリダイレクト先
+LOGOUT_REDIRECT_URL = '/meibo/login/'  # ログアウト後のリダイレクト先
