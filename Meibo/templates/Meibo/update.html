@@ -150,6 +150,14 @@
                 preview.style.display = 'block'; // 画像を表示
             }
         });
+
+        // 削除確認ダイアログと削除実行
+        function confirmDelete(memberId) {
+            if (confirm('本当に削除しますか？')) {
+                const deleteUrl = `{% url 'member_delete' 0 %}`.replace('0', memberId);
+                window.location.href = deleteUrl;
+            }
+        }
     </script>
 </head>
 <body>
@@ -242,7 +250,7 @@
             <div class="button-container">
                 <button type="submit">更新</button>
                 <button type="reset">取消</button>
-                <button type="button" class="delete-button" onclick="if(confirm('本当に削除しますか？')) { window.location.href='{% url 'member_delete' member.id %}'; }">削除</button>
+                <button type="button" class="delete-button" onclick="confirmDelete('{{ member.id }}')">削除</button>
             </div>
         </form>
     </div>

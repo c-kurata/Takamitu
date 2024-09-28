@@ -9,22 +9,30 @@
     <!-- Bootstrap CSSの導入 -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        /* 上下の余白を減らして全体的に上に上げる */
+        /* 全体のスタイル調整 */
         body {
             padding-top: 30px; /* 全体を少し上に */
             padding-bottom: 30px; /* 余白を統一 */
+            background-color: #f8f9fa; /* 背景色を薄いグレーに */
         }
 
         .container {
-            margin-top: -50px; /* 全体をさらに上に上げる */
+            margin-top: -20px; /* containerの上の余白を調整 */
+        }
+
+        .main-buttons {
+            margin-bottom: 40px; /* メインボタンの下の余白を調整 */
         }
 
         .menu-button {
             margin-top: 30px; /* メニューに戻るボタンの余白を追加 */
+            margin-bottom: 20px; /* 下部余白を追加 */
         }
 
-        .main-buttons {
-            margin-bottom: 40px; /* メインボタンの余白を調整 */
+        .img-fluid {
+            max-width: 100%; /* ロゴ画像の幅を親要素にフィット */
+            height: auto; /* 高さを自動調整 */
+            margin-top: 30px; /* ロゴ画像の上に余白を追加 */
         }
     </style>
 </head>
@@ -32,14 +40,14 @@
     <div class="container text-center">
         <h1 class="my-4">見積管理</h1>
         <div class="main-buttons d-flex justify-content-around mb-4">
-            <button onclick="location.href='{% url 'mitumori_create' %}'" class="btn btn-primary btn-lg">登録画面へ</button>
-            <button onclick="location.href='{% url 'mitumori_list' %}'" class="btn btn-secondary btn-lg">一覧画面へ</button>
+            <button onclick="location.href='{% url 'mitumori_create' %}';" class="btn btn-primary btn-lg">登録画面へ</button>
+            <button onclick="location.href='{% url 'mitumori_list' %}';" class="btn btn-secondary btn-lg">一覧画面へ</button>
         </div>
         <div class="text-center">
-            <img src="{% static 'images/Takamitu-logo.png' %}" alt="Takamitu Logo" class="img-fluid" style="width: 500px;">
+            <img src="{% static 'images/Takamitu-logo.png' %}" alt="Takamitu Logo" class="img-fluid" style="width: 400px;">
         </div>
-        <!-- メニューに戻るボタンを追加し、少し下に下げる -->
-        <button onclick="location.href='{% url 'menu' %}'" class="btn btn-info btn-lg menu-button">メニューに戻る</button>
+        <!-- メニューに戻るボタンを少し下に下げる -->
+        <button onclick="location.href='{% url 'menu' %}';" class="btn btn-info btn-lg menu-button">メニューに戻る</button>
     </div>
 
     <!-- Bootstrap JSの導入 -->

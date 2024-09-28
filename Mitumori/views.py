@@ -64,7 +64,7 @@ def list_view(request):
         if form.cleaned_data['keyword']:
             estimates = estimates.filter(estimate_name__icontains=form.cleaned_data['keyword'])
         if form.cleaned_data['submit_to_name']:
-            estimates = estimates.filter(submit_to_name__icontains(form.cleaned_data['submit_to_name']))
+            estimates = estimates.filter(submit_to_name__icontains=form.cleaned_data['submit_to_name']) # submit_to__name__icontains のように変更する必要があるかも
         if form.cleaned_data['department']:
             estimates = estimates.filter(department=form.cleaned_data['department'])
         if form.cleaned_data['created_by']:

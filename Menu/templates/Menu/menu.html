@@ -83,6 +83,7 @@
         flex-wrap: wrap; /* 追加: ボタンを複数行に折り返す */
         max-width: 800px; /* 全体の幅を制限して中央に配置 */
         margin: 0 auto; /* 自動余白で中央寄せ */
+        margin-top: 100px; /* メニューボタンを少し下げる */
     }
     /* メニューボタンのスタイル */
     .menu-button {
@@ -102,7 +103,7 @@
         background-color: #2980b9;
         transform: translateY(-3px);  /* ホバー時のアニメーション */
     }
-</style>
+    </style>
 </head>
 <body>
     <!-- ヘッダー部分 -->
@@ -121,9 +122,9 @@
         <div class="menu-title">メニュー</div>
         <div class="button-container">
             <!-- 各アプリへのリンクを設定 -->
-            <button class="menu-button" onclick="location.href='{% url 'mitumori_index' %}'">見積り管理</button>
-            <button class="menu-button" onclick="location.href='{% url 'reservation_list' %}'">設備予約管理</button>
-            <button class="menu-button" onclick="location.href='{% url 'member_list' %}'">社員名簿管理</button>
+            <button class="menu-button" onclick='window.location.href="{% url "mitumori_index" %}";'>見積り管理</button>
+            <button class="menu-button" onclick='window.location.href="{% url "reservation_list" %}";'>設備予約管理</button>
+            <button class="menu-button" onclick='window.location.href="{% url "member_list" %}";'>社員名簿管理</button>
             <button class="menu-button">工事中</button>
             <button class="menu-button">工事中</button>
             <button class="menu-button">工事中</button>
