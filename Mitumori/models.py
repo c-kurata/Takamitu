@@ -23,13 +23,13 @@ class Estimate(models.Model):
     estimate_amount = models.DecimalField(max_digits=10, decimal_places=2)
     summary = models.TextField()
     created_by = models.ForeignKey(Employee, related_name='created_estimates', on_delete=models.CASCADE)
-    last_updated_by = models.ForeignKey(Employee, related_name='updated_estimates', on_delete=models.CASCADE)
-    admin_approval_status = models.CharField(max_length=50, choices=[('', '選択してください'), ('承認', '承認'), ('未承認', '未承認')])
+    last_updated_by = models.ForeignKey(Employee, related_name='updated_estimates', on_delete=models.CASCADE, blank=True, null=True)  # 修正
+    admin_approval_status = models.CharField(max_length=50, choices=[('', '選択してください'), ('承認', '承認'), ('未承認', '未承認')], blank=True)  # 修正
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
     submission_date = models.DateField()
     attachment = models.FileField(upload_to='attachments/')
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.estimate_name
